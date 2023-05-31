@@ -1,0 +1,120 @@
+<!-- <nav bar> -->
+<nav class="navbar bg-primary " >
+  <form class="container">
+    <div class=" text-light fs-6 ms-5 ps-5" routerLink="/">Users</div>
+<div class="ms-5 ps-5">
+  <button mat-raised-button (click)="openModal()" >    + Add User  </button>
+
+</div>
+  </form>
+</nav>
+
+
+
+
+<!-- Display user table -->
+
+<div class="table-container">
+  <div class="table-responsive">
+    <table class="table ">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Number</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="users; else falseBlock">
+        <tr *ngFor="let user of users">
+          <td><span routerLink="users/{{user.id}}"><mat-checkbox></mat-checkbox></span></td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{user.address.street + ' ' + user.address.suite + ' ' + user.address.city}}</td>
+          <td>
+            <mat-icon color="warn" (click)="delete(user.id)">delete</mat-icon>
+            <mat-icon color="primary" class="ms-2" (click)="editUser(user)">edit</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #falseBlock>
+      <tr>
+        <td colspan="8" class="text-center">
+          <mat-progress-bar class="mt-5" mode="indeterminate"></mat-progress-bar>
+        </td>
+      </tr>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal -->
+
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">User Information</h4>
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('cancel')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm" (ngSubmit)="modal.close('save')">
+      <div >
+        <div class="form-group">
+          <div mat-dialog-content>
+            <div class="row justify-content-between">
+              <div class="col-lg-6 mt-3">
+                <mat-label class="fw-bold">Name</mat-label>
+                <mat-form-field appearance="outline">
+                  <input matInput type="text" placeholder="eg:Ahmed Ezz" formControlName="name" />
+                </mat-form-field>
+              </div>
+              <div class="col-lg-6 mt-3">
+                <mat-label class="fw-bold">Email Address </mat-label>
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="eg:Moh@example.com" required formControlName="email" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mt-3" id="phone">
+              <mat-label class="fw-bold">Phone</mat-label>
+              <mat-form-field appearance="outline">
+                <input matInput type="text" placeholder="eg:01000002871" formControlName="phone" />
+              </mat-form-field>
+            </div>
+
+            <div class="fw-bold">Address</div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="col-lg-4 mt-3">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="eg:Cairo" formControlName="city" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-lg-4 mt-3">
+                <mat-label>Street</mat-label>
+                <input matInput type="text" placeholder="eg:Ahmed tony" formControlName="street" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-lg-4 mt-3">
+                <mat-label>Suite</mat-label>
+                <input matInput placeholder="eg:suite 578" formControlName="suite" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div mat-dialog-actions class="d-flex justify-content-center">
+            <button mat-raised-button color="primary" class="col-lg-5  mt-3" type="submit" [disabled]="userForm.invalid" >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="mt-4 d-flex justify-content-center" *ngIf="userForm.invalid">
+      <p class="text-danger">Please fill in all required fields Correct.</p>
+    </div>
+  </div>
+</ng-template>

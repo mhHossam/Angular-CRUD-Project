@@ -1,0 +1,52 @@
+<!-- Display user details -->
+<nav class="navbar navbar-expand-lg bg-primary">
+  <div class="container justify-content-center">
+    <div class="navbar-brand text-light me-5">
+      <h5>{{ user.name }}</h5>
+    </div>
+    <div class=" justify-content-center">
+      <ul class="navbar-nav">
+        <li class="nav-item text-light me-5">
+          <span>{{ user.email }}</span>
+          <p>{{ user.phone }}</p>
+        </li>
+        <li class="nav-item">
+          <span class="fw-bold text-light">Address</span>
+          <p class="text-light">{{ user.address.street + " " + user.address.suite + " " + user.address.city }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Display user's albums -->
+
+<div class="container">
+  <div *ngIf="albums; else falseBlock">
+    <h2 class="text-center mt-3" style="color: orange">{{ user.name }}'s Albums</h2>
+    <hr>
+    <div class="row">
+      <div class="col-6 col-sm-4 col-lg-4 mb-4" *ngFor="let album of albums">
+        <div class="card">
+          <div style="background-color: rgb(241, 49, 15);">
+            <div class="card-body text-center">
+              <div class="card-title text-center mt-4 text-light" routerLink="/users/{{album.userId}}/albums/{{album.id}}">
+                Album {{ album.id }}
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <span class="fw-bold">15</span>
+            <p style="color: lightgray">photos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #falseBlock>
+    <div class="text-center mt-5">
+      <mat-progress-bar class="mt-5" mode="indeterminate"></mat-progress-bar>
+    </div>
+  </ng-template>
+</div>
+
